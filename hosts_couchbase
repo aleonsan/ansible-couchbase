@@ -1,0 +1,5 @@
+# VMWare Paradigma hosts
+[couchbase_servers]
+192.168.32.67
+192.168.32.68
+192.168.32.111

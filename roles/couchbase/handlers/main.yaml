@@ -1,0 +1,8 @@
+- name: couchbase start
+  service: name=couchbase-server state=started
+
+- name: couchbase stop
+  service: name=couchbase-server state=stopped
+
+- name: couchbase restart
+  service: name=couchbase-server state=restarted

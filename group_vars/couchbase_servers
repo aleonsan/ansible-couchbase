@@ -1,0 +1,27 @@
+package_download_path: /tmp
+couchbase:
+  enterprise_version: 4.5.0
+  community_version: 4.1.0
+  platform: x86_64
+  admin_user: paradigma
+  admin_password: paradigma
+  download_mirror: http://packages.couchbase.com/releases
+  configuration:
+    cluster_ram_quota: 1024
+    bucket_name: paradigma
+    bucket_ram_quota: 512
+    num_replicas: 1 
+  ports:
+    web_console_port: 8091
+    api_port: 8092
+    rest_query_port: 8093 
+    internal_ssl_bucket_port: 11207
+    internal_bucket_port: 11209
+    internal_external_bucket_port: 11210
+    client_interface_port: 11211
+    incoming_ssl_proxy_port: 11214
+    internal_outgoing_ssl_proxy_port: 18091
+    internal_rest_ssl_port: 18092
+    erlang_mapper_port: 4369
+    node_exchange_upper_port: 21100
+    node_exchange_lower_port: 21199

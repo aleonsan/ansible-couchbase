@@ -1,0 +1,39 @@
+---
+- set_fact:
+    couchbase_version: "{{ couchbase.enterprise_version }}"
+    couchbase_package_name: couchbase-server-enterprise-{{ couchbase.enterprise_version }}-centos7.{{ couchbase.platform }}.rpm
+
+- name: check remote couchbase package
+  stat: path={{ package_download_path }}/{{ couchbase_package_name }}
+  register: remote_couchbase_package_exists
+
+- name: check local package existence
+  local_action: stat path=roles/couchbase/files/{{ couchbase_package_name }}
+  register: local_couchbase_package_exists    
+  when: not remote_couchbase_package_exists.stat.exists
+
+- name: copy local package to remote
+  copy: src={{ couchbase_package_name }} dest={{ package_download_path }}/{{ couchbase_package_name }}  
+  when: not remote_couchbase_package_exists.stat.exists and local_couchbase_package_exists.stat.exists
+
+- set_fact:
+    couchbase_version: "{{ couchbase.community_version }}"
+    couchbase_package_name: couchbase-server-community-{{ couchbase.community_version }}-centos7.{{ couchbase.platform }}.rpm
+  when: not remote_couchbase_package_exists.stat.exists and not local_couchbase_package_exists.stat.exists
+
+- name: check remote couchbase package
+  stat: path={{ package_download_path }}/{{ couchbase_package_name }}
+  register: remote_couchbase_package_exists
+
+- name: download couchbase community package if not downloaded
+  get_url: url={{ couchbase.download_mirror }}/{{ couchbase_version }}/{{ couchbase_package_name }} dest={{ package_download_path }}
+  when: not remote_couchbase_package_exists.stat.exists 
+
+- name: install couchbase package rpm
+  become: true
+  yum: name={{ package_download_path }}/{{ couchbase_package_name }} state=present 
+  notify: couchbase start
+
+- name: delete package downloaded if needed
+  file: path={{ package_download_path }}/{{ couchbase_package_name }} state=absent
+  when: force_cleanup is defined and force_cleanup == "True"

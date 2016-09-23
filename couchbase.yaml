@@ -1,0 +1,7 @@
+---
+- hosts: couchbase_servers
+  user: sistemas
+  roles:
+    - firewall
+    - selinux
+    - couchbase

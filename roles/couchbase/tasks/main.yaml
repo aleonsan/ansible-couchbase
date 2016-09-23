@@ -1,0 +1,14 @@
+- include: couchbase_installation.yaml
+  tags:
+    - couchbase
+    - couchbase_installation
+
+- include: couchbase_configuration.yaml
+  tags:
+    - couchbase
+    - couchbase_configuration
+
+- include: couchbase_uninstallation.yaml
+  when: uninstallation is defined
+  tags:
+    - couchbase_uninstallation

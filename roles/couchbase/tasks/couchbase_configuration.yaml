@@ -1,0 +1,3 @@
+---
+- name: initialize couchbase cluster 
+  uri: url=http://{{ inventory_hostname }}:{{ couchbase.ports.web_console_port }}/node/controller/setupServices method=POST

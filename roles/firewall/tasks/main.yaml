@@ -1,0 +1,26 @@
+- name: enable and start firewalld
+  become: true
+  service: name=firewalld enabled=yes state=started
+  tags:
+    - firewall 
+
+- name: set port policy
+  become: true
+  firewalld: port={{ item }}/tcp permanent=true state=enabled immediate=yes
+  with_items:
+    - "{{ couchbase.ports.web_console_port }}"
+    - "{{ couchbase.ports.api_port }}"
+    - "{{ couchbase.ports.rest_query_port }}"
+    - "{{ couchbase.ports.internal_ssl_bucket_port }}"
+    - "{{ couchbase.ports.internal_bucket_port }}"
+    - "{{ couchbase.ports.internal_external_bucket_port }}"
+    - "{{ couchbase.ports.client_interface_port }}"
+    - "{{ couchbase.ports.incoming_ssl_proxy_port }}"
+    - "{{ couchbase.ports.internal_outgoing_ssl_proxy_port }}"
+    - "{{ couchbase.ports.internal_rest_ssl_port }}"
+    - "{{ couchbase.ports.erlang_mapper_port }}"
+    - "{{ couchbase.ports.node_exchange_upper_port }}"
+    - "{{ couchbase.ports.node_exchange_lower_port }}"
+  tags:
+    - firewall 
+  notify: firewall restart
